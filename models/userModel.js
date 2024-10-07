@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
   {
     accountType: {
       type: String,
-      enum: ["doctor", "patient"],
+      enum: ["doctor", "patient", "healthorganisation"],
       required: true,
     },
     email: {
