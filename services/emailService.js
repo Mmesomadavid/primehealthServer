@@ -36,41 +36,13 @@ export async function welcomeMail(userEmail) {
   try {
 
     let bodyContent = `
-    <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
-  <tr>
-    <td style="padding: 20px;">
-      <h1 style="font-size: 24px; color: #007bff; text-align: center;">Welcome to PrimeHealth!</h1>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-        Hello there,
-      </p>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-        We're thrilled to welcome you to the PrimeHealth family! Whether you're here to book an appointment, access medical records, or connect with healthcare professionals, we've got you covered.
-      </p>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-        To get started, explore our platform and take full advantage of its features. If you have any questions or need assistance, feel free to contact our support team at <a href="mailto:${process.env.SMTP_USER}" style="color: #007bff; text-decoration: none;">${process.env.SMTP_USER}</a>. We're always here to help!
-      </p>
-      <div style="text-align: center; margin-bottom: 20px;">
-        <a href="https://primehealth.com/dashboard" style="background-color: #007bff; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">Go to Dashboard</a>
-      </div>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-        Looking for more ways to make the most out of PrimeHealth? Check out our resources and stay updated with the latest in healthcare technology.
-      </p>
-      <div style="text-align: center; margin-bottom: 20px;">
-        <a href="https://primehealth.com/resources" style="background-color: #28a745; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">Explore Resources</a>
-      </div>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
-        Thank you for choosing PrimeHealth. Together, let's achieve your health goals with ease.
-      </p>
-      <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Best regards,</p>
-      <p style="font-size: 16px; color: #333;">The PrimeHealth Team</p>
-      <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-      <p style="font-size: 14px; color: #666; text-align: center;">
-        This email was sent to you as part of your PrimeHealth subscription. If you no longer wish to receive emails, you can <a href="https://primehealth.com/unsubscribe" style="color: #007bff; text-decoration: none;">unsubscribe here</a>.
-      </p>
+    <td>
+      <p style="margin-bottom: 20px;">Hello</p>
+      <p style="margin-bottom: 20px;">We're thrilled to have you as part of our community. At Primehealth, we are dedicated to providing the best services and support to our customers.</p>
+      <p style="margin-bottom: 20px;">If you have any questions or need assistance, feel free to reach out to our support team at ${process.env.SMTP_USER}.</p>
+      <p style="margin-bottom: 20px;">Best regards</p>
+      <p style="margin-bottom: 20px;">The Primehealth Team</p>
     </td>
-  </tr>
-</table>
-
   `;
 
     let mailOptions = {

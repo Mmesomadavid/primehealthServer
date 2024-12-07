@@ -31,48 +31,50 @@ export const getUser = async (req, res, next) => {
 
 // Signup logic
 export const signup = async (req, res, next) => {
-  const { error } = validateUserSignup(req.body);
-  if (error) return next(new AppError(error.details[0].message, 400));
-
-  const { accountType, email, password, phone, } = req.body;
-
-  // Check if user already exists
-  let user = await User.findOne({
-    $or: [{ email }, { phone }],
-  });
-
-  if (user) {
-    if (user.email === email) {
-      return next(new AppError("Email already registered, Please login", 400));
-    } else if (user.phone === phone) {
-      return next(new AppError("This User detail already exists", 400));
-    }
-  }
-
-  // Hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  if (accountType === 'hospital') {
-    user = new Hospital({ accountType,  email, phone, password: hashedPassword });
-  } else if (accountType === 'doctor') {
-    user = new Doctor({ accountType,  email, phone, password: hashedPassword });
-  } else {
-    return next(new AppError('Invalid account type', 400));
-  }
-
   try {
+    const { error } = validateUserSignup(req.body);
+    if (error) return next(new AppError(error.details[0].message, 400));
+
+    const { accountType, email, password, phone } = req.body;
+
+    // Check if user already exists
+    let user = await User.findOne({
+      $or: [{ email }, { phone }],
+    });
+
+    if (user) {
+      if (user.email === email) {
+        return next(new AppError("Email already registered. Please login.", 400));
+      } else if (user.phone === phone) {
+        return next(new AppError("This phone number is already registered.", 400));
+      }
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user based on account type
+    if (accountType === 'hospital') {
+      user = new Hospital({ accountType, email, phone, password: hashedPassword });
+    } else if (accountType === 'doctor') {
+      user = new Doctor({ accountType, email, phone, password: hashedPassword });
+    } else {
+      return next(new AppError('Invalid account type', 400));
+    }
+
     await user.save();
     await sendOTP(email);
 
     // Generate JWT
     const token = user.genAuthToken();
 
-    res.status(201).send({
-      message: "User registered successfully, check your email for OTP.",
+    res.status(201).json({
+      message: "User registered successfully. Check your email for OTP.",
       token,
     });
   } catch (err) {
-    next(err);
+    console.error("Signup error:", err);
+    next(new AppError('An error occurred during registration. Please try again.', 500));
   }
 };
 
@@ -150,7 +152,6 @@ export const login = async (req, res, next) => {
 
   res.send({ message: 'Logged in successfully', token, accountType: user.accountType });
 };
-
 
 // Request Password Reset
 export const requestPasswordReset = async (req, res, next) => {
