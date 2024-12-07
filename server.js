@@ -38,7 +38,6 @@ app.use((req, res, next) => {
 // middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 
 // MongoDB Connection
