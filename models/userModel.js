@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema(
       enum: ["doctor", "patient", "hospital"],
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     email: {
       type: String,
       required: true,

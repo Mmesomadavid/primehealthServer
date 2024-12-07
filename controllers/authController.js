@@ -35,17 +35,17 @@ export const signup = async (req, res, next) => {
     const { error } = validateUserSignup(req.body);
     if (error) return next(new AppError(error.details[0].message, 400));
 
-    const { accountType, email, password, phone } = req.body;
+    const { accountType, username, email, password, phone } = req.body;
 
     // Check if user already exists
     let user = await User.findOne({
-      $or: [{ email }, { phone }],
+      $or: [{ email }, { username }],
     });
 
     if (user) {
       if (user.email === email) {
         return next(new AppError("Email already registered. Please login.", 400));
-      } else if (user.phone === phone) {
+      } else if (user.username === username) {
         return next(new AppError("This phone number is already registered.", 400));
       }
     }
@@ -55,9 +55,9 @@ export const signup = async (req, res, next) => {
 
     // Create new user based on account type
     if (accountType === 'hospital') {
-      user = new Hospital({ accountType, email, phone, password: hashedPassword });
+      user = new Hospital({ accountType, username, email, phone, password: hashedPassword });
     } else if (accountType === 'doctor') {
-      user = new Doctor({ accountType, email, phone, password: hashedPassword });
+      user = new Doctor({ accountType, username, email, phone, password: hashedPassword });
     } else {
       return next(new AppError('Invalid account type', 400));
     }
