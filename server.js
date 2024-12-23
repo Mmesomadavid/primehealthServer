@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import http from "http";
 import errorMiddleware from "./middleware/errroMiddleware.js";
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 
 // routes
@@ -18,6 +19,9 @@ import { verifyTransporter } from './services/emailConfig.js';
 // Create Express app
 const app = express();
 const server = http.createServer(app);
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 verifyTransporter();
 
